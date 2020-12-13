@@ -67,18 +67,20 @@ function setup() {
   
   trex.setCollider("circle",0,0,35);
           trex.debug = false;
-          score = 0;
-  
+          score = 0;  
 }
 
 function draw() {
   
-          background(0);
-            
-           //displaying score
-           fill(0);
-           textFont("Georgia");
-           text("Score: "+ score, displayWidth/2-50,50);
+          background("#d7e8fd");
+
+          //scoring
+          score = score + Math.round(getFrameRate()/60);
+
+          //displaying score
+          fill(0);
+          textFont("Georgia");
+          text("Score: "+ score, displayWidth/2-50,50);
 
         camera.position.x = trex.x;
         camera.position.y = trex.y;
@@ -117,38 +119,37 @@ function draw() {
           if(obstaclesGroup.isTouching(trex)){
               //trex.velocityY = -12;
               jumpSound.play();
-              gameState = END;
+              gameState=END;
               dieSound.play()
             }
+            
   }
-           else if (gameState === END) {
-                gameOver.visible = true;
-                restart.visible = true;
 
-            //change the trex animation
-                trex.changeAnimation("collided", trex_collided);
-     
-              ground.velocityX = 0;
-              trex.velocityY = 0;
-      
-     
-              //set lifetime of the game objects so that they are never destroyed
-            obstaclesGroup.setLifetimeEach(-1);
-            cloudsGroup.setLifetimeEach(-1);
-
-             obstaclesGroup.setVelocityXEach(0);
-             cloudsGroup.setVelocityXEach(0); 
-     
-             if(mousePressedOver(restart)) {
-              reset();
-            }
-           }
- 
+                if(gameState===END){
+                  gameOver.visible = true;
+                  restart.visible = true;
+  
+              //change the trex animation
+                  trex.changeAnimation("collided", trex_collided);
+       
+                ground.velocityX = 0;
+                trex.velocityY = 0;
+        
+       
+                //set lifetime of the game objects so that they are never destroyed
+              obstaclesGroup.setLifetimeEach(-1);
+              cloudsGroup.setLifetimeEach(-1);
+  
+               obstaclesGroup.setVelocityXEach(0);
+               cloudsGroup.setVelocityXEach(0); 
+       
+               if(mousePressedOver(restart)) {
+                reset();
+              }
+             }           
             //stop trex from falling down
             trex.collide(invisibleGround);
-           //scoring
-           score = score + Math.round(getFrameRate()/60);
-            drawSprites();
+             drawSprites();
 }
 
 function reset(){
